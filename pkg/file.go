@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"strings"
 	"sync"
+	"time"
 )
 
 var doOnce sync.Once
@@ -45,6 +46,7 @@ func CopyDir(source, target string) error {
 	}
 
 	for _, fd := range fds {
+		time.Sleep(10 * time.Second)
 		sourcePath := filepath.Join(src, fd.Name())
 		targetPath := filepath.Join(dst, fd.Name())
 
@@ -109,6 +111,10 @@ func ValidatePath(path string) (os.FileInfo, error) {
 }
 
 func WatchDir(source, target string){
+	var (
+		metaFile *os.File
+		cOnce sync.Once
+	)
 	token := func(path string) string {
 		t := strings.Split(path, "/")
 		return t[len(t)-1]
@@ -136,12 +142,21 @@ func WatchDir(source, target string){
 						if err != nil {
 							log.Fatal(err)
 						}
-
 						err = EncryptFile(dst, "key")
 						if err != nil {
 							log.Fatalf("Failed to encrypt file: %v", err)
 						}
 						log.Printf("Encrypted file <%s>.", dst)
+						cOnce.Do(func() {
+							metaFile, err = os.Create(filepath.Join(target, "meta.txt"))
+							if err != nil {
+								log.Fatalf("Failed creating file: %s", err)
+							}
+						})
+						_, err = fmt.Fprintln(metaFile, filepath.Join(target, "meta.txt"))
+						if err != nil {
+							log.Fatalf("failed writing to file: %s", err)
+						}
 					}()
 				}
 			case err, ok := <- watcher.Errors:
