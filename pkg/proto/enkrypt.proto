@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package proto;
+
+service Enkrypt {
+    rpc ListEncryptedFiles(Directory) returns(EncryptedFiles);
+}
+
+message EncryptedFiles {
+    repeated string files = 1;
+}
+
+message Directory {
+    string path = 1;
+}
