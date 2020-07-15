@@ -10,15 +10,16 @@ import (
 	"path/filepath"
 	"strings"
 	"sync"
+	"time"
 )
 
 var (
 	doOnce   sync.Once
 	MetaFile *os.File
-
+	Done = make(chan struct{})
 )
 
-func CopyDir(source, target string, errCh chan error) error {
+func CopyDir(source, target string) error {
 	srcInfo, err := ValidatePath(source)
 	if err != nil  && os.IsNotExist(err) {
 		return err
@@ -33,6 +34,9 @@ func CopyDir(source, target string, errCh chan error) error {
 	src := filepath.Clean(source)
 	dst := filepath.Clean(target)
 
+	doOnce.Do(func() {
+		go WatchDir(source, target)
+	})
 
 	err = os.MkdirAll(dst, srcInfo.Mode())
 	if err != nil {
@@ -45,7 +49,7 @@ func CopyDir(source, target string, errCh chan error) error {
 	}
 
 	for _, fd := range fds {
-		//time.Sleep(5 * time.Second)
+		time.Sleep(2 * time.Second)
 		sourcePath := filepath.Join(src, fd.Name())
 		targetPath := filepath.Join(dst, fd.Name())
 
@@ -108,7 +112,7 @@ func ValidatePath(path string) (os.FileInfo, error) {
 	return f, nil
 }
 
-func WatchDir(source, target string, done chan struct{}){
+func WatchDir(source, target string){
 	var cOnce sync.Once
 
 	token := func(path string) string {
@@ -121,7 +125,6 @@ func WatchDir(source, target string, done chan struct{}){
 		log.Fatal(err)
 	}
 	defer watcher.Close()
-
 	err = watcher.Add(source)
 	if err != nil {
 		log.Fatal(err)
@@ -155,7 +158,7 @@ func WatchDir(source, target string, done chan struct{}){
 								log.Fatalf("Failed creating file: %s", err)
 							}
 						})
-						_, err = fmt.Fprintln(MetaFile, filepath.Join(target, "meta.txt"))
+						_, err = fmt.Fprintln(MetaFile, dst)
 						if err != nil {
 							log.Fatalf("failed writing to file: %s", err)
 						}
@@ -169,5 +172,6 @@ func WatchDir(source, target string, done chan struct{}){
 			}
 		}
 	}()
-	<- done
+	<-Done
+	log.Println("Closing watcher...")
 }

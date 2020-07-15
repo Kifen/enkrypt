@@ -9,6 +9,7 @@ import (
 	"google.golang.org/grpc"
 	"log"
 	"net"
+	"os"
 )
 
 type EnkryptServer struct {
@@ -25,7 +26,13 @@ func (e *EnkryptServer) ListEncryptedFiles(ctx context.Context, d *pb.E) (*pb.En
 	encryptedFiles := &pb.EncryptedFiles{
 		Files: make([]string, 0),
 	}
-	scanner := bufio.NewScanner(pkg.MetaFile)
+
+	file, err := os.Open(pkg.MetaFile.Name())
+	if err != nil {
+		return nil, err
+	}
+
+	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		encryptedFiles.Files = append(encryptedFiles.Files, scanner.Text())
 	}
