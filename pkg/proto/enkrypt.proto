@@ -3,7 +3,8 @@ syntax = "proto3";
 package proto;
 
 service Enkrypt {
-    rpc ListEncryptedFiles(Directory) returns(EncryptedFiles);
+    rpc ListEncryptedFiles(E) returns(EncryptedFiles);
+    rpc GetFile(Info) returns (File);
 }
 
 message EncryptedFiles {
@@ -13,3 +14,14 @@ message EncryptedFiles {
 message Directory {
     string path = 1;
 }
+
+message Info {
+    string filePath = 1;
+    string downloadPath = 2;
+}
+
+message File {
+    string file = 1;
+}
+
+message E {}

@@ -1,11 +1,13 @@
 package main
 
 import (
+	"bufio"
 	"context"
 	"fmt"
 	"github.com/Kifen/enkrypt/pkg"
 	pb "github.com/Kifen/enkrypt/pkg/proto"
 	"google.golang.org/grpc"
+	"log"
 	"net"
 )
 
@@ -13,31 +15,46 @@ type EnkryptServer struct {
 	port int
 }
 
-func (e *EnkryptServer) ListEncryptedFiles(ctx context.Context, dir *pb.Directory) (*pb.EncryptedFiles, error) {
-	f, err := pkg.ValidatePath(dir.Path)
+func NewServer(port int) *EnkryptServer {
+	return &EnkryptServer{
+		port: port,
+	}
+}
+
+func (e *EnkryptServer) ListEncryptedFiles(ctx context.Context, d *pb.E) (*pb.EncryptedFiles, error) {
+	encryptedFiles := &pb.EncryptedFiles{
+		Files: make([]string, 0),
+	}
+	scanner := bufio.NewScanner(pkg.MetaFile)
+	for scanner.Scan() {
+		encryptedFiles.Files = append(encryptedFiles.Files, scanner.Text())
+	}
+
+	return encryptedFiles, nil
+}
+
+func (e *EnkryptServer) GetFile(ctx context.Context, i *pb.Info) (*pb.File, error) {
+	file, err := pkg.DownloadFile(i.FilePath, i.DownloadPath)
 	if err != nil {
 		return nil, err
 	}
 
-	if !f.IsDir() {
-		return nil, fmt.Errorf("Path %s is not a directory.", dir.Path)
-	}
-
-	return nil, nil
+	log.Println("Download finished")
+	return &pb.File{File: file}, nil
 }
 
-func (e *EnkryptServer) serve() error {
+func (e *EnkryptServer) serve(){
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", e.port))
 	if err != nil {
-		return fmt.Errorf("Failed to listen: %v", err)
+		log.Fatalf("Failed to listen: %v", err)
 	}
 
 	grpcServer := grpc.NewServer()
 	pb.RegisterEnkryptServer(grpcServer, &EnkryptServer{})
-	grpcServer.Serve(lis)
-	if err := grpcServer.Serve(lis); err != nil {
-		return fmt.Errorf("failed serving server: %v", err)
-	}
 
-	return nil
+	log.Printf("Grpc server listening on port %d", e.port)
+
+	if err := grpcServer.Serve(lis); err != nil {
+		log.Fatalf("failed serving server: %v", err)
+	}
 }

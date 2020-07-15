@@ -11,6 +11,8 @@ const (
 )
 
 func main()  {
+	srv := NewServer(8080)
+	go srv.serve()
 	dstInfo, err := pkg.ValidatePath(target)
 	if err != nil {
 		log.Fatal(err)
@@ -21,6 +23,10 @@ func main()  {
 	}
 
 	log.Printf("Target %s is valid", target)
+
+	done := make(chan struct{})
+	copyErr := make(chan  error)
+	go pkg.WatchDir(source, target, done)
 
 	err = pkg.CopyDir(source, target)
 	if err != nil {

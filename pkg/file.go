@@ -10,16 +10,15 @@ import (
 	"path/filepath"
 	"strings"
 	"sync"
-	"time"
 )
 
-var doOnce sync.Once
+var (
+	doOnce   sync.Once
+	MetaFile *os.File
 
-func CopyDir(source, target string) error {
-	doOnce.Do(func() {
-		go WatchDir(source, target)
-	})
-	
+)
+
+func CopyDir(source, target string, errCh chan error) error {
 	srcInfo, err := ValidatePath(source)
 	if err != nil  && os.IsNotExist(err) {
 		return err
@@ -46,12 +45,11 @@ func CopyDir(source, target string) error {
 	}
 
 	for _, fd := range fds {
-		time.Sleep(10 * time.Second)
+		//time.Sleep(5 * time.Second)
 		sourcePath := filepath.Join(src, fd.Name())
 		targetPath := filepath.Join(dst, fd.Name())
 
 		if fd.IsDir() {
-			log.Printf("%s is dir", fd.Name())
 			err = CopyDir(sourcePath, targetPath)
 			if err != nil {
 				return err
@@ -110,11 +108,9 @@ func ValidatePath(path string) (os.FileInfo, error) {
 	return f, nil
 }
 
-func WatchDir(source, target string){
-	var (
-		metaFile *os.File
-		cOnce sync.Once
-	)
+func WatchDir(source, target string, done chan struct{}){
+	var cOnce sync.Once
+
 	token := func(path string) string {
 		t := strings.Split(path, "/")
 		return t[len(t)-1]
@@ -126,7 +122,13 @@ func WatchDir(source, target string){
 	}
 	defer watcher.Close()
 
-	done := make(chan bool)
+	err = watcher.Add(source)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Printf("Watching directory: %s", source)
+
 	go func() {
 		for {
 			select {
@@ -148,12 +150,12 @@ func WatchDir(source, target string){
 						}
 						log.Printf("Encrypted file <%s>.", dst)
 						cOnce.Do(func() {
-							metaFile, err = os.Create(filepath.Join(target, "meta.txt"))
+							MetaFile, err = os.Create(filepath.Join(target, ".meta.txt"))
 							if err != nil {
 								log.Fatalf("Failed creating file: %s", err)
 							}
 						})
-						_, err = fmt.Fprintln(metaFile, filepath.Join(target, "meta.txt"))
+						_, err = fmt.Fprintln(MetaFile, filepath.Join(target, "meta.txt"))
 						if err != nil {
 							log.Fatalf("failed writing to file: %s", err)
 						}
@@ -167,12 +169,5 @@ func WatchDir(source, target string){
 			}
 		}
 	}()
-
-	err = watcher.Add(source)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	log.Printf("Watching directory: %s", source)
 	<- done
 }

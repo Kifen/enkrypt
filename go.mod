@@ -3,6 +3,7 @@ module github.com/Kifen/enkrypt
 go 1.13
 
 require (
+	github.com/dustin/go-humanize v1.0.0
 	github.com/fsnotify/fsnotify v1.4.9
 	github.com/golang/protobuf v1.4.2
 	golang.org/x/net v0.0.0-20200707034311-ab3426394381 // indirect
