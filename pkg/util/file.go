@@ -29,8 +29,6 @@ func CopyDir(source, target string) error {
 		return fmt.Errorf("Source %s is not a directory", source)
 	}
 
-	log.Printf("Source %s is valid", source)
-
 	src := filepath.Clean(source)
 	dst := filepath.Clean(target)
 
@@ -103,7 +101,6 @@ func CopyFile(source, target string) error {
 
 // ValidatePath checks if directory exists
 func ValidatePath(path string) (os.FileInfo, error) {
-	log.Printf("Validating %s.", path)
 	f, err := os.Stat(path)
 	if err != nil || os.IsNotExist(err) {
 		return nil, err

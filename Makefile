@@ -1,7 +1,7 @@
-OPTS?=GO111MODULE=on
+ 5000OPTS?=GO111MODULE=on
 
 build: ## Build enkrypt binary
-	${OPTS} go build
+	${OPTS} go build -o ./enkrypt ./cmd
 
 clean: ## Clean compiled binary
 	rm -rf ./enkrypt

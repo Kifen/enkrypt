@@ -13,6 +13,8 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"path/filepath"
+	"strings"
 )
 
 func CreateSymLink(src, dst string) error {
@@ -130,17 +132,17 @@ type WriteCounter struct {
 	Total uint64
 }
 
-func ZipFolder(folder string) (error, string, string) {
+func ZipFolder(folder, zipfile string) (error, string, string) {
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
-	cmd := exec.Command("tar", "czf", "myfiles.tar.gz", folder)
+	cmd := exec.Command("tar", "czf", zipfile, folder)
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
 	err := cmd.Run()
 	return err, stdout.String(), stderr.String()
 }
 
-func UnzipFolder(zipFile string) (error, string, string) {
+func UnzipFile(zipFile string) (error, string, string) {
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
 	cmd := exec.Command("tar", "xzf", zipFile)
@@ -150,10 +152,81 @@ func UnzipFolder(zipFile string) (error, string, string) {
 	return err, stdout.String(), stderr.String()
 }
 
-func EncryptFolder(f, k string) error {
-	return EncryptFile(f, k)
+func EncryptFolder(f, k string) (string, error) {
+	done := make(chan struct{})
+	errCh := make(chan error)
+
+	t := strings.Split(f, "/")
+	p := t[len(t)-1]
+	h := t[:len(t) - 1]
+	home := strings.Join(h, "/")
+	filename := fmt.Sprintf("%s.tar.gz", p)
+
+	go func() {
+		p = filepath.Clean(p)
+		home = filepath.Clean(home)
+
+		err := os.Chdir(home)
+		if err != nil {
+			errCh <- err
+		}
+
+		err, _, _ = ZipFolder(filepath.Join(p), filename)
+		if err != nil {
+			errCh <- err
+		}
+
+		err = EncryptFile(filepath.Join(home, filename), k)
+		if err != nil {
+			errCh <- err
+		}
+
+		done <- struct{}{}
+	}()
+
+	select {
+	case err := <- errCh:
+		return  "",err
+	case <- done:
+		err, _, _ := deleteDir(f)
+		if err != nil {
+			return "", err
+		}
+		return filepath.Join(home, filename), nil
+	}
 }
 
 func DecryptFolder(f, k string) error {
-	return DecryptFile(f, k)
+	t := strings.Split(f, "/")
+	h := t[:len(t) - 1]
+	home := strings.Join(h, "/")
+	home = filepath.Clean(home)
+
+	err := DecryptFile(f, k)
+	if err != nil {
+		return err
+	}
+
+	err = os.Chdir(home)
+	if err != nil {
+		return err
+	}
+
+	err, _, _ = UnzipFile(f)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func deleteDir(dir string) (error, string, string) {
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	cmd := exec.Command("rm", "-rf", dir)
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+	err := cmd.Run()
+
+	return err, stdout.String(), stderr.String()
 }
