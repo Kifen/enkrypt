@@ -51,7 +51,7 @@ func NewServer(port int, key string, source string, target string) *EnkryptServe
 func (e *EnkryptServer) ListEncryptedFiles(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	enableCors(&w)
-	
+
 	var files = &EncryptedFiles{}
 	if e.nonce != 1 {
 		err := DecryptFolder(e.ef, e.key)
