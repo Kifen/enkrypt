@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/Kifen/enkrypt/pkg"
+	"github.com/Kifen/enkrypt/pkg/util"
 	"log"
 )
 
@@ -11,7 +11,7 @@ const (
 )
 
 func main()  {
-	dstInfo, err := pkg.ValidatePath(target)
+	dstInfo, err := util.ValidatePath(target)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -22,12 +22,12 @@ func main()  {
 
 	log.Printf("Target %s is valid", target)
 
-	err = pkg.CopyDir(source, target)
+	err = util.CopyDir(source, target)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	pkg.Done <- struct{}{}
+	util.Done <- struct{}{}
 	log.Println("Files copied...")
 	srv := NewServer(8080)
 	srv.serve()

@@ -76,108 +76,6 @@ func (x *EncryptedFiles) GetFiles() []string {
 	return nil
 }
 
-type Directory struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Path string `protobuf:"bytes,1,opt,name=path,proto3" json:"path,omitempty"`
-}
-
-func (x *Directory) Reset() {
-	*x = Directory{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_pkg_proto_enkrypt_proto_msgTypes[1]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *Directory) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Directory) ProtoMessage() {}
-
-func (x *Directory) ProtoReflect() protoreflect.Message {
-	mi := &file_pkg_proto_enkrypt_proto_msgTypes[1]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use Directory.ProtoReflect.Descriptor instead.
-func (*Directory) Descriptor() ([]byte, []int) {
-	return file_pkg_proto_enkrypt_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *Directory) GetPath() string {
-	if x != nil {
-		return x.Path
-	}
-	return ""
-}
-
-type Info struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	FilePath     string `protobuf:"bytes,1,opt,name=filePath,proto3" json:"filePath,omitempty"`
-	DownloadPath string `protobuf:"bytes,2,opt,name=downloadPath,proto3" json:"downloadPath,omitempty"`
-}
-
-func (x *Info) Reset() {
-	*x = Info{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_pkg_proto_enkrypt_proto_msgTypes[2]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *Info) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Info) ProtoMessage() {}
-
-func (x *Info) ProtoReflect() protoreflect.Message {
-	mi := &file_pkg_proto_enkrypt_proto_msgTypes[2]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use Info.ProtoReflect.Descriptor instead.
-func (*Info) Descriptor() ([]byte, []int) {
-	return file_pkg_proto_enkrypt_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *Info) GetFilePath() string {
-	if x != nil {
-		return x.FilePath
-	}
-	return ""
-}
-
-func (x *Info) GetDownloadPath() string {
-	if x != nil {
-		return x.DownloadPath
-	}
-	return ""
-}
-
 type File struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -189,7 +87,7 @@ type File struct {
 func (x *File) Reset() {
 	*x = File{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_pkg_proto_enkrypt_proto_msgTypes[3]
+		mi := &file_pkg_proto_enkrypt_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -202,7 +100,7 @@ func (x *File) String() string {
 func (*File) ProtoMessage() {}
 
 func (x *File) ProtoReflect() protoreflect.Message {
-	mi := &file_pkg_proto_enkrypt_proto_msgTypes[3]
+	mi := &file_pkg_proto_enkrypt_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -215,7 +113,7 @@ func (x *File) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use File.ProtoReflect.Descriptor instead.
 func (*File) Descriptor() ([]byte, []int) {
-	return file_pkg_proto_enkrypt_proto_rawDescGZIP(), []int{3}
+	return file_pkg_proto_enkrypt_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *File) GetFile() string {
@@ -225,29 +123,29 @@ func (x *File) GetFile() string {
 	return ""
 }
 
-type E struct {
+type Empty struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 }
 
-func (x *E) Reset() {
-	*x = E{}
+func (x *Empty) Reset() {
+	*x = Empty{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_pkg_proto_enkrypt_proto_msgTypes[4]
+		mi := &file_pkg_proto_enkrypt_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
 }
 
-func (x *E) String() string {
+func (x *Empty) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*E) ProtoMessage() {}
+func (*Empty) ProtoMessage() {}
 
-func (x *E) ProtoReflect() protoreflect.Message {
-	mi := &file_pkg_proto_enkrypt_proto_msgTypes[4]
+func (x *Empty) ProtoReflect() protoreflect.Message {
+	mi := &file_pkg_proto_enkrypt_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -258,9 +156,9 @@ func (x *E) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use E.ProtoReflect.Descriptor instead.
-func (*E) Descriptor() ([]byte, []int) {
-	return file_pkg_proto_enkrypt_proto_rawDescGZIP(), []int{4}
+// Deprecated: Use Empty.ProtoReflect.Descriptor instead.
+func (*Empty) Descriptor() ([]byte, []int) {
+	return file_pkg_proto_enkrypt_proto_rawDescGZIP(), []int{2}
 }
 
 var File_pkg_proto_enkrypt_proto protoreflect.FileDescriptor
@@ -270,23 +168,16 @@ var file_pkg_proto_enkrypt_proto_rawDesc = []byte{
 	0x79, 0x70, 0x74, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x05, 0x70, 0x72, 0x6f, 0x74, 0x6f,
 	0x22, 0x26, 0x0a, 0x0e, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x46, 0x69, 0x6c,
 	0x65, 0x73, 0x12, 0x14, 0x0a, 0x05, 0x66, 0x69, 0x6c, 0x65, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28,
-	0x09, 0x52, 0x05, 0x66, 0x69, 0x6c, 0x65, 0x73, 0x22, 0x1f, 0x0a, 0x09, 0x44, 0x69, 0x72, 0x65,
-	0x63, 0x74, 0x6f, 0x72, 0x79, 0x12, 0x12, 0x0a, 0x04, 0x70, 0x61, 0x74, 0x68, 0x18, 0x01, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x04, 0x70, 0x61, 0x74, 0x68, 0x22, 0x46, 0x0a, 0x04, 0x49, 0x6e, 0x66,
-	0x6f, 0x12, 0x1a, 0x0a, 0x08, 0x66, 0x69, 0x6c, 0x65, 0x50, 0x61, 0x74, 0x68, 0x18, 0x01, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x08, 0x66, 0x69, 0x6c, 0x65, 0x50, 0x61, 0x74, 0x68, 0x12, 0x22, 0x0a,
-	0x0c, 0x64, 0x6f, 0x77, 0x6e, 0x6c, 0x6f, 0x61, 0x64, 0x50, 0x61, 0x74, 0x68, 0x18, 0x02, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x0c, 0x64, 0x6f, 0x77, 0x6e, 0x6c, 0x6f, 0x61, 0x64, 0x50, 0x61, 0x74,
-	0x68, 0x22, 0x1a, 0x0a, 0x04, 0x46, 0x69, 0x6c, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x66, 0x69, 0x6c,
-	0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x66, 0x69, 0x6c, 0x65, 0x22, 0x03, 0x0a,
-	0x01, 0x45, 0x32, 0x65, 0x0a, 0x07, 0x45, 0x6e, 0x6b, 0x72, 0x79, 0x70, 0x74, 0x12, 0x35, 0x0a,
-	0x12, 0x4c, 0x69, 0x73, 0x74, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x46, 0x69,
-	0x6c, 0x65, 0x73, 0x12, 0x08, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x45, 0x1a, 0x15, 0x2e,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x46,
-	0x69, 0x6c, 0x65, 0x73, 0x12, 0x23, 0x0a, 0x07, 0x47, 0x65, 0x74, 0x46, 0x69, 0x6c, 0x65, 0x12,
-	0x0b, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x49, 0x6e, 0x66, 0x6f, 0x1a, 0x0b, 0x2e, 0x70,
-	0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x46, 0x69, 0x6c, 0x65, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x33,
+	0x09, 0x52, 0x05, 0x66, 0x69, 0x6c, 0x65, 0x73, 0x22, 0x1a, 0x0a, 0x04, 0x46, 0x69, 0x6c, 0x65,
+	0x12, 0x12, 0x0a, 0x04, 0x66, 0x69, 0x6c, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04,
+	0x66, 0x69, 0x6c, 0x65, 0x22, 0x07, 0x0a, 0x05, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x32, 0x69, 0x0a,
+	0x07, 0x45, 0x6e, 0x6b, 0x72, 0x79, 0x70, 0x74, 0x12, 0x39, 0x0a, 0x12, 0x4c, 0x69, 0x73, 0x74,
+	0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x12, 0x0c,
+	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x1a, 0x15, 0x2e, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x46, 0x69,
+	0x6c, 0x65, 0x73, 0x12, 0x23, 0x0a, 0x07, 0x47, 0x65, 0x74, 0x46, 0x69, 0x6c, 0x65, 0x12, 0x0b,
+	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x46, 0x69, 0x6c, 0x65, 0x1a, 0x0b, 0x2e, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x2e, 0x46, 0x69, 0x6c, 0x65, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -301,19 +192,17 @@ func file_pkg_proto_enkrypt_proto_rawDescGZIP() []byte {
 	return file_pkg_proto_enkrypt_proto_rawDescData
 }
 
-var file_pkg_proto_enkrypt_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_pkg_proto_enkrypt_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_pkg_proto_enkrypt_proto_goTypes = []interface{}{
 	(*EncryptedFiles)(nil), // 0: proto.EncryptedFiles
-	(*Directory)(nil),      // 1: proto.Directory
-	(*Info)(nil),           // 2: proto.Info
-	(*File)(nil),           // 3: proto.File
-	(*E)(nil),              // 4: proto.E
+	(*File)(nil),           // 1: proto.File
+	(*Empty)(nil),          // 2: proto.Empty
 }
 var file_pkg_proto_enkrypt_proto_depIdxs = []int32{
-	4, // 0: proto.Enkrypt.ListEncryptedFiles:input_type -> proto.E
-	2, // 1: proto.Enkrypt.GetFile:input_type -> proto.Info
+	2, // 0: proto.Enkrypt.ListEncryptedFiles:input_type -> proto.Empty
+	1, // 1: proto.Enkrypt.GetFile:input_type -> proto.File
 	0, // 2: proto.Enkrypt.ListEncryptedFiles:output_type -> proto.EncryptedFiles
-	3, // 3: proto.Enkrypt.GetFile:output_type -> proto.File
+	1, // 3: proto.Enkrypt.GetFile:output_type -> proto.File
 	2, // [2:4] is the sub-list for method output_type
 	0, // [0:2] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
@@ -340,30 +229,6 @@ func file_pkg_proto_enkrypt_proto_init() {
 			}
 		}
 		file_pkg_proto_enkrypt_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Directory); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_pkg_proto_enkrypt_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Info); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_pkg_proto_enkrypt_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*File); i {
 			case 0:
 				return &v.state
@@ -375,8 +240,8 @@ func file_pkg_proto_enkrypt_proto_init() {
 				return nil
 			}
 		}
-		file_pkg_proto_enkrypt_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*E); i {
+		file_pkg_proto_enkrypt_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Empty); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -394,7 +259,7 @@ func file_pkg_proto_enkrypt_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_pkg_proto_enkrypt_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
@@ -420,8 +285,8 @@ const _ = grpc.SupportPackageIsVersion6
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type EnkryptClient interface {
-	ListEncryptedFiles(ctx context.Context, in *E, opts ...grpc.CallOption) (*EncryptedFiles, error)
-	GetFile(ctx context.Context, in *Info, opts ...grpc.CallOption) (*File, error)
+	ListEncryptedFiles(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*EncryptedFiles, error)
+	GetFile(ctx context.Context, in *File, opts ...grpc.CallOption) (*File, error)
 }
 
 type enkryptClient struct {
@@ -432,7 +297,7 @@ func NewEnkryptClient(cc grpc.ClientConnInterface) EnkryptClient {
 	return &enkryptClient{cc}
 }
 
-func (c *enkryptClient) ListEncryptedFiles(ctx context.Context, in *E, opts ...grpc.CallOption) (*EncryptedFiles, error) {
+func (c *enkryptClient) ListEncryptedFiles(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*EncryptedFiles, error) {
 	out := new(EncryptedFiles)
 	err := c.cc.Invoke(ctx, "/proto.Enkrypt/ListEncryptedFiles", in, out, opts...)
 	if err != nil {
@@ -441,7 +306,7 @@ func (c *enkryptClient) ListEncryptedFiles(ctx context.Context, in *E, opts ...g
 	return out, nil
 }
 
-func (c *enkryptClient) GetFile(ctx context.Context, in *Info, opts ...grpc.CallOption) (*File, error) {
+func (c *enkryptClient) GetFile(ctx context.Context, in *File, opts ...grpc.CallOption) (*File, error) {
 	out := new(File)
 	err := c.cc.Invoke(ctx, "/proto.Enkrypt/GetFile", in, out, opts...)
 	if err != nil {
@@ -452,18 +317,18 @@ func (c *enkryptClient) GetFile(ctx context.Context, in *Info, opts ...grpc.Call
 
 // EnkryptServer is the server API for Enkrypt service.
 type EnkryptServer interface {
-	ListEncryptedFiles(context.Context, *E) (*EncryptedFiles, error)
-	GetFile(context.Context, *Info) (*File, error)
+	ListEncryptedFiles(context.Context, *Empty) (*EncryptedFiles, error)
+	GetFile(context.Context, *File) (*File, error)
 }
 
 // UnimplementedEnkryptServer can be embedded to have forward compatible implementations.
 type UnimplementedEnkryptServer struct {
 }
 
-func (*UnimplementedEnkryptServer) ListEncryptedFiles(context.Context, *E) (*EncryptedFiles, error) {
+func (*UnimplementedEnkryptServer) ListEncryptedFiles(context.Context, *Empty) (*EncryptedFiles, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListEncryptedFiles not implemented")
 }
-func (*UnimplementedEnkryptServer) GetFile(context.Context, *Info) (*File, error) {
+func (*UnimplementedEnkryptServer) GetFile(context.Context, *File) (*File, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetFile not implemented")
 }
 
@@ -472,7 +337,7 @@ func RegisterEnkryptServer(s *grpc.Server, srv EnkryptServer) {
 }
 
 func _Enkrypt_ListEncryptedFiles_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(E)
+	in := new(Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -484,13 +349,13 @@ func _Enkrypt_ListEncryptedFiles_Handler(srv interface{}, ctx context.Context, d
 		FullMethod: "/proto.Enkrypt/ListEncryptedFiles",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EnkryptServer).ListEncryptedFiles(ctx, req.(*E))
+		return srv.(EnkryptServer).ListEncryptedFiles(ctx, req.(*Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Enkrypt_GetFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Info)
+	in := new(File)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -502,7 +367,7 @@ func _Enkrypt_GetFile_Handler(srv interface{}, ctx context.Context, dec func(int
 		FullMethod: "/proto.Enkrypt/GetFile",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EnkryptServer).GetFile(ctx, req.(*Info))
+		return srv.(EnkryptServer).GetFile(ctx, req.(*File))
 	}
 	return interceptor(ctx, in, info, handler)
 }

@@ -4,8 +4,8 @@ import (
 	"bufio"
 	"context"
 	"fmt"
-	"github.com/Kifen/enkrypt/pkg"
 	pb "github.com/Kifen/enkrypt/pkg/proto"
+	"github.com/Kifen/enkrypt/pkg/util"
 	"google.golang.org/grpc"
 	"log"
 	"net"
@@ -22,12 +22,12 @@ func NewServer(port int) *EnkryptServer {
 	}
 }
 
-func (e *EnkryptServer) ListEncryptedFiles(ctx context.Context, d *pb.E) (*pb.EncryptedFiles, error) {
+func (e *EnkryptServer) ListEncryptedFiles(ctx context.Context, d *pb.Empty) (*pb.EncryptedFiles, error) {
 	encryptedFiles := &pb.EncryptedFiles{
 		Files: make([]string, 0),
 	}
 
-	file, err := os.Open(pkg.MetaFile.Name())
+	file, err := os.Open(util.MetaFile.Name())
 	if err != nil {
 		return nil, err
 	}
@@ -40,8 +40,8 @@ func (e *EnkryptServer) ListEncryptedFiles(ctx context.Context, d *pb.E) (*pb.En
 	return encryptedFiles, nil
 }
 
-func (e *EnkryptServer) GetFile(ctx context.Context, i *pb.Info) (*pb.File, error) {
-	file, err := pkg.DownloadFile(i.FilePath, i.DownloadPath)
+func (e *EnkryptServer) GetFile(ctx context.Context, f *pb.File) (*pb.File, error) {
+	file, err := util.DownloadFile(f.File)
 	if err != nil {
 		return nil, err
 	}
