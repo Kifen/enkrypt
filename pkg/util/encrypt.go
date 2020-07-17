@@ -85,8 +85,6 @@ func EncryptFile(file, key string) error {
 		return fmt.Errorf("Failed tp overwrite file: %s", err)
 	}
 
-	log.Println("Overwritten file.")
-
 	return nil
 }
 
@@ -104,6 +102,7 @@ func DecryptFile(file string, passPhrase string) error {
 
 	data, err := ioutil.ReadFile(file)
 	if err != nil {
+		log.Println("NA HEREEE")
 		return err
 	}
 

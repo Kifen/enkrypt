@@ -4,9 +4,12 @@ import (
 	"fmt"
 	"github.com/dustin/go-humanize"
 	"io"
+	"log"
 	"os"
 	"strings"
 )
+
+var OP int
 
 func (wc *WriteCounter) Write(p []byte) (int, error) {
 	n := len(p)
@@ -38,11 +41,11 @@ func DownloadFile(file string) (string, error) {
 	fileName := token[len(token)-1]
 	//newFile := filepath.Join(downloadPath, fileName)
 
-	out, err := os.Create(file+".tmp")
+	out, err := os.Create(file + ".tmp")
 	if err != nil {
 		return "", err
 	}
-	defer  out.Close()
+	defer out.Close()
 
 	// Create our bytes counter and pass it to be used alongside our writer
 	counter := &WriteCounter{}
@@ -63,3 +66,18 @@ func DownloadFile(file string) (string, error) {
 	return fileName, nil
 }
 
+func Download(file, key string) (*os.File, error) {
+	err := DecryptFile(file, key)
+	if err != nil {
+		return nil, err
+	}
+
+	log.Printf("File decrypted: <%s>", file)
+
+	in, err := os.Open(file)
+	if err != nil {
+		return nil, err
+	}
+
+	return in, nil
+}
