@@ -44,7 +44,7 @@ func ResolveSymlink(file string) (string, error) {
 	return o, nil
 }
 
-func overwriteFile(f string, b []byte) error  {
+func overwriteFile(f string, b []byte) error {
 	file, err := os.Create(f)
 	if err != nil {
 		return err
@@ -76,7 +76,7 @@ func EncryptFile(file, key string) error {
 
 	data, err := ioutil.ReadFile(file)
 	if err != nil {
-		return  fmt.Errorf("Failed to read file: %v", err)
+		return fmt.Errorf("Failed to read file: %v", err)
 	}
 
 	b := gcm.Seal(nonce, nonce, data, nil)
@@ -157,7 +157,7 @@ func EncryptFolder(f, k string) (string, error) {
 
 	t := strings.Split(f, "/")
 	p := t[len(t)-1]
-	h := t[:len(t) - 1]
+	h := t[:len(t)-1]
 	home := strings.Join(h, "/")
 	filename := fmt.Sprintf("%s.tar.gz", p)
 
@@ -184,9 +184,9 @@ func EncryptFolder(f, k string) (string, error) {
 	}()
 
 	select {
-	case err := <- errCh:
-		return  "",err
-	case <- done:
+	case err := <-errCh:
+		return "", err
+	case <-done:
 		err, _, _ := deleteDir(f)
 		if err != nil {
 			return "", err
@@ -197,7 +197,7 @@ func EncryptFolder(f, k string) (string, error) {
 
 func DecryptFolder(f, k string) error {
 	t := strings.Split(f, "/")
-	h := t[:len(t) - 1]
+	h := t[:len(t)-1]
 	home := strings.Join(h, "/")
 	home = filepath.Clean(home)
 

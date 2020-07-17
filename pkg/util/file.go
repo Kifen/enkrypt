@@ -2,7 +2,6 @@ package util
 
 import (
 	"fmt"
-	"github.com/fsnotify/fsnotify"
 	"io"
 	"io/ioutil"
 	"log"
@@ -11,17 +10,19 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/fsnotify/fsnotify"
 )
 
 var (
 	doOnce   sync.Once
 	MetaFile *os.File
-	Done = make(chan struct{})
+	Done     = make(chan struct{})
 )
 
 func CopyDir(source, target string) error {
 	srcInfo, err := ValidatePath(source)
-	if err != nil  && os.IsNotExist(err) {
+	if err != nil && os.IsNotExist(err) {
 		return err
 	}
 
@@ -84,7 +85,7 @@ func CopyFile(source, target string) error {
 	if err != nil {
 		return err
 	}
-	defer  out.Close()
+	defer out.Close()
 
 	_, err = io.Copy(out, in)
 	if err != nil {
@@ -109,7 +110,7 @@ func ValidatePath(path string) (os.FileInfo, error) {
 	return f, nil
 }
 
-func WatchDir(source, target string){
+func WatchDir(source, target string) {
 	var cOnce sync.Once
 
 	token := func(path string) string {
@@ -132,7 +133,7 @@ func WatchDir(source, target string){
 	go func() {
 		for {
 			select {
-			case event, ok := <- watcher.Events:
+			case event, ok := <-watcher.Events:
 				if !ok {
 					return
 				}
@@ -161,7 +162,7 @@ func WatchDir(source, target string){
 						}
 					}()
 				}
-			case err, ok := <- watcher.Errors:
+			case err, ok := <-watcher.Errors:
 				if !ok {
 					return
 				}

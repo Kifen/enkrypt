@@ -17,6 +17,7 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/spf13/viper v1.7.0 // indirect
 	goa.design/goa/v3 v3.2.0 // indirect
+	golang.org/x/tools v0.0.0-20200717024301-6ddee64345a6 // indirect
 	google.golang.org/genproto v0.0.0-20200714145754-f631a03bbd91 // indirect
 	google.golang.org/grpc v1.30.0
 	google.golang.org/protobuf v1.25.0

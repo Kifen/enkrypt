@@ -1,24 +1,25 @@
 package commands
 
 import (
-	"github.com/Kifen/enkrypt/pkg/util"
-	"github.com/spf13/cobra"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
+
+	"github.com/Kifen/enkrypt/pkg/util"
+	"github.com/spf13/cobra"
 )
 
 var (
 	source, target, key string
-	port int32
-	errCh = make(chan error)
-	done = make(chan struct{})
-	grpcServer *util.EnkryptServer
+	port                int32
+	errCh               = make(chan error)
+	done                = make(chan struct{})
+	grpcServer          *util.EnkryptServer
 )
 
 var rootCmd = &cobra.Command{
-	Use: "enkrypt",
+	Use:   "enkrypt",
 	Short: "",
 	Run: func(cmd *cobra.Command, args []string) {
 		validateArgs(source, target)
@@ -43,7 +44,7 @@ func Execute() {
 	}
 }
 
-func validateArgs(args ...string){
+func validateArgs(args ...string) {
 	for _, arg := range args {
 		i, err := util.ValidatePath(arg)
 		if err != nil {
@@ -56,7 +57,7 @@ func validateArgs(args ...string){
 	}
 }
 
-func mirrorSource(){
+func mirrorSource() {
 	err := util.CopyDir(source, target)
 	if err != nil {
 		log.Fatal(err)

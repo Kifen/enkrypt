@@ -4,11 +4,12 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
-	"github.com/gorilla/handlers"
-	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/gorilla/handlers"
+	"github.com/gorilla/mux"
 )
 
 type EnkryptServer struct {
@@ -84,28 +85,12 @@ func (e *EnkryptServer) ListEncryptedFiles(w http.ResponseWriter, r *http.Reques
 	json.NewEncoder(w).Encode(files)
 }
 
-func (e *EnkryptServer) GetFile(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	vars := mux.Vars(r)
-	f := vars["file"]
-	file, err := DownloadFile(f)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	log.Printf("File %s downloaded.", file)
-	w.WriteHeader(http.StatusOK)
-}
-
 func (e *EnkryptServer) DownloadFile(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
 	param := r.URL.Query().Get("file")
-	//w.Header().Add("Content-Disposition", "Attachment")
-	//w.Header().Set("Content-Type", r.Header.Get("Content-Type"))
-	//w.Header().Set("Content-Length", w.Header.("Content-Length"))
 
 	file, err := Download(param, e.key)
+	log.Println("KEY: ", e.key)
 	if err != nil {
 		log.Println("FAILS HERE: ", err)
 		w.WriteHeader(http.StatusInternalServerError)
@@ -113,10 +98,7 @@ func (e *EnkryptServer) DownloadFile(w http.ResponseWriter, r *http.Request) {
 	}
 	defer file.Close()
 
-	log.Println("FIles is downloaded: ", file.Name())
 	http.ServeFile(w, r, param)
-
-	log.Println("SUCCESSFULLY DOWNLOADED FILE...")
 	return
 }
 
@@ -127,7 +109,7 @@ func (e *EnkryptServer) Serve() {
 	router.HandleFunc("/downloadfile/", e.DownloadFile)
 
 	log.Printf("Server serving on port %d", e.port)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", e.port),  handlers.CORS(corsObj)(router)))
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", e.port), handlers.CORS(corsObj)(router)))
 }
 
 func enableCors(w *http.ResponseWriter) {
@@ -137,4 +119,3 @@ func enableCors(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Headers",
 		"Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
 }
-

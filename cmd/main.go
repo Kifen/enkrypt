@@ -2,6 +2,6 @@ package main
 
 import "github.com/Kifen/enkrypt/cmd/commands"
 
-func main()  {
+func main() {
 	commands.Execute()
 }

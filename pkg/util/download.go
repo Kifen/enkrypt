@@ -2,11 +2,12 @@ package util
 
 import (
 	"fmt"
-	"github.com/dustin/go-humanize"
 	"io"
 	"log"
 	"os"
 	"strings"
+
+	"github.com/dustin/go-humanize"
 )
 
 var OP int
