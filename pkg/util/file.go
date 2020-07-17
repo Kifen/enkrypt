@@ -2,6 +2,7 @@ package util
 
 import (
 	"fmt"
+	"github.com/fsnotify/fsnotify"
 	"io"
 	"io/ioutil"
 	"log"
@@ -9,9 +10,6 @@ import (
 	"path/filepath"
 	"strings"
 	"sync"
-	"time"
-
-	"github.com/fsnotify/fsnotify"
 )
 
 var (
@@ -48,7 +46,6 @@ func CopyDir(source, target string) error {
 	}
 
 	for _, fd := range fds {
-		time.Sleep(2 * time.Second)
 		sourcePath := filepath.Join(src, fd.Name())
 		targetPath := filepath.Join(dst, fd.Name())
 

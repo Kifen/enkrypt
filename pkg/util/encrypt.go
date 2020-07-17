@@ -17,33 +17,6 @@ import (
 	"strings"
 )
 
-func CreateSymLink(src, dst string) error {
-	err := os.Symlink(src, dst)
-	if err != nil {
-		return fmt.Errorf("Failed in creating symlink: %v", err)
-	}
-
-	return nil
-}
-
-func ResolveSymlink(file string) (string, error) {
-	var o string
-	fileInfo, err := os.Lstat(file)
-	if err != nil {
-		return "", err
-	}
-
-	if fileInfo.Mode()&os.ModeSymlink != 0 {
-		originFile, err := os.Readlink(file)
-		if err != nil {
-			return "", fmt.Errorf("Failed to resolve symlink: %v", err)
-		}
-		o = originFile
-	}
-
-	return o, nil
-}
-
 func overwriteFile(f string, b []byte) error {
 	file, err := os.Create(f)
 	if err != nil {
