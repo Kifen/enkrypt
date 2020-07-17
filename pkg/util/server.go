@@ -4,20 +4,18 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
+	"github.com/gorilla/handlers"
+	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 	"os"
-
-	"github.com/gorilla/handlers"
-	"github.com/gorilla/mux"
 )
 
 type EnkryptServer struct {
 	port   int
 	key    string
-	srcdir string
-	dstdir string
 	ef     string
+	encryptedFiles []string
 	nonce  int
 	router *mux.Router
 }
@@ -39,13 +37,12 @@ func (e *EnkryptServer) UpdateNOnce(n int) {
 	e.nonce = n
 }
 
-func NewServer(port int, key string, source string, target string) *EnkryptServer {
+func NewServer(key string, source string, target string) *EnkryptServer {
 	return &EnkryptServer{
-		port:   port,
+		port:   5000,
 		key:    key,
-		srcdir: source,
-		dstdir: target,
 		nonce:  0,
+		encryptedFiles: make([]string, 0),
 		router: mux.NewRouter().StrictSlash(true),
 	}
 }
@@ -87,16 +84,27 @@ func (e *EnkryptServer) ListEncryptedFiles(w http.ResponseWriter, r *http.Reques
 
 func (e *EnkryptServer) DownloadFile(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
+	isEncrypted := func(file string) bool {
+		for _, v := range e.encryptedFiles {
+			if file == v {
+				return true
+			}
+		}
+		return false
+	}
+
 	param := r.URL.Query().Get("file")
 
-	file, err := Download(param, e.key)
-	log.Println("KEY: ", e.key)
-	if err != nil {
-		log.Println("FAILS HERE: ", err)
-		w.WriteHeader(http.StatusInternalServerError)
-		return
+	b := isEncrypted(param)
+	if !b {
+		file, err := Download(param, e.key)
+		defer file.Close()
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		e.encryptedFiles = append(e.encryptedFiles, param)
 	}
-	defer file.Close()
 
 	http.ServeFile(w, r, param)
 	return

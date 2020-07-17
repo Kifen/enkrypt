@@ -12,7 +12,6 @@ import (
 
 var (
 	source, target, key string
-	port                int32
 	errCh               = make(chan error)
 	done                = make(chan struct{})
 	grpcServer          *util.EnkryptServer
@@ -23,7 +22,7 @@ var rootCmd = &cobra.Command{
 	Short: "",
 	Run: func(cmd *cobra.Command, args []string) {
 		validateArgs(source, target)
-		grpcServer = util.NewServer(int(port), key, source, target)
+		grpcServer = util.NewServer(key, source, target)
 		go mirrorSource()
 		go grpcServer.Serve()
 		waitOsSignals()
@@ -34,7 +33,6 @@ func init() {
 	rootCmd.Flags().StringVarP(&key, "key", "k", "", "seed phrase")
 	rootCmd.Flags().StringVarP(&source, "source", "s", "", "source directory")
 	rootCmd.Flags().StringVarP(&target, "target", "t", "", "target directory")
-	rootCmd.Flags().Int32VarP(&port, "port", "p", 2000, "server port")
 }
 
 // Execute executes root CLI command.
