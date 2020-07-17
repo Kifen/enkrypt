@@ -1,5 +1,5 @@
 # enkrypt
-##### enkrypt is a CLI server that creates an encrypted folder in the local system that mirrors an existing folder
+##### enkrypt is a CLI program and http server. It creates an encrypted folder in the local system that mirrors an existing folder.
 
 ### Build and run
 
