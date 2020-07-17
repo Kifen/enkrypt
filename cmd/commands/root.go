@@ -62,7 +62,7 @@ func mirrorSource() {
 	}
 
 	util.Done <- struct{}{}
-	log.Println("Files copied...")
+	log.Println("Mirrored source...")
 
 	f, err := util.EncryptFolder(target, key)
 	if err != nil {

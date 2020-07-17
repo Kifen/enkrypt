@@ -4,20 +4,21 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
-	"github.com/gorilla/handlers"
-	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/gorilla/handlers"
+	"github.com/gorilla/mux"
 )
 
 type EnkryptServer struct {
-	port   int
-	key    string
-	ef     string
+	port           int
+	key            string
+	ef             string
 	encryptedFiles []string
-	nonce  int
-	router *mux.Router
+	nonce          int
+	router         *mux.Router
 }
 
 type EncryptedFiles struct {
@@ -39,11 +40,11 @@ func (e *EnkryptServer) UpdateNOnce(n int) {
 
 func NewServer(key string, source string, target string) *EnkryptServer {
 	return &EnkryptServer{
-		port:   5000,
-		key:    key,
-		nonce:  0,
+		port:           5000,
+		key:            key,
+		nonce:          0,
 		encryptedFiles: make([]string, 0),
-		router: mux.NewRouter().StrictSlash(true),
+		router:         mux.NewRouter().StrictSlash(true),
 	}
 }
 
